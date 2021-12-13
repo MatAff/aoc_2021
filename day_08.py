@@ -1,6 +1,6 @@
 
 # Settings
-path_data = "day_08_test.txt"
+path_data = "day_08.txt"
 
 # Data
 input = open(path_data).readlines()
@@ -34,7 +34,7 @@ def remove_letters_dict(d, letters):
 
 def remove_letters_list(l, letters):
     return [remove_letters_string(e, letters) for e in l]
-        
+
 
 def create_combos(items, so_far):
     new_combos = []
@@ -58,7 +58,6 @@ def it(parts, solution):
     combos.append("")
     # print(combos)
 
-    # This needs to move up
     made_progress = False
     for comb in combos:
         sol = solution.copy()
@@ -91,16 +90,12 @@ def it(parts, solution):
         if made_progress:
             return par, sol, made_progress
 
-        # # Recurvise
-        # parts, solution = it(parts, solution)
-
     return parts, solution, made_progress
 
 
-line = input[0]
-for line in input:
-    # def solve(line):
+def solve(line):
     parts = line.replace("| ", "").split(" ")
+    parts_original = parts.copy()
     solution = [None] * len(parts)
 
     running = True
@@ -109,13 +104,28 @@ for line in input:
         # print(parts, solution, made_progress, running)
         if None not in solution[-4:]:
             running = False
-    print(solution[-4:])
+    
+    # print(solution, parts_original)
+    
+    # Nine correction
+    for i, (s, p) in enumerate(zip(solution, parts_original)):
+        # print(s, p)
+        if s == 5:
+            if len(p) == 6:
+                # print("Correcting")
+                solution[i] = 9
 
+    return solution[-4:]
 
-# parts, solution, made_progress = it(parts, solution)
-# print(parts, solution, made_progress)
+# line = input[0]
+sol_list = []
+total = 0
+for line in input:
+    sol = solve(line)
+    sol_list.append(sol)
+    val = int(''.join([str(e) for e in sol]))
+    total = total + val
 
-# parts, solution, made_progress = it(parts, solution)
-# print(parts, solution, made_progress)
-
+print(sol_list)
+print(total)
 
